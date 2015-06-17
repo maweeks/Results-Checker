@@ -57,6 +57,9 @@ def check_site():
 
 		# send message
 		send_messages("Hey, results might be out. Good luck!", success_subject)
+
+		print r.text
+
 		global check_result
 		check_result = False
 
