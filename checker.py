@@ -9,30 +9,23 @@ from email.mime.text import MIMEText
 from datetime import date
 import smtplib
 
-login_user = ''
-login_pass = ''
-message_email = ''
-message_number_from = ''
-message_number_to = ''
+import config
 
-account_sid = ""
-auth_token  = ""
-
-
-login_user = 'mjw59'
-login_pass = 'University332211'
-message_email = 'matt.weeks93@gmail.com'
-message_email_password = 'J6w-7S4-VR6-BV7'
-message_number_from = '+441613751697'
-message_number_to = '+447515772568'
-
-account_sid = "AC267641869b15bc21014a23663fd9ff49"
-auth_token  = "de6c9f1d79439f714d0b7979a4aa8f1b"
-
+account_sid = config.c_account_sid
+auth_token  = config.c_auth_token
+login_user = config.c_login_user
+login_pass = config.c_login_pass
+message_email = config.c_message_email
+message_email_password = config.c_message_email_password
+message_number_from = config.c_message_number_from
+message_number_to = config.c_message_number_to
+success_subject = config.c_success_subject
+system_run_count = config.c_system_run_count
+time_sleep = config.c_time_sleep
 
 check_result = True
-check_count = 12
-total_checks = 0
+check_count = config.c_system_run_count # to send email on first check, set to 0 if unwanted
+total_checks = -1
 
 client = TwilioRestClient(account_sid, auth_token)
 
@@ -52,8 +45,7 @@ def check_site():
 		total_checks = total_checks + 1
 
 		# send messages every 6 hours
-		# if (check_count >= 3):
-		if (check_count >= 12):
+		if (check_count >= system_run_count):
 
 			# send message
 			send_messages("System is still running.", "UoK Checking")
@@ -64,7 +56,7 @@ def check_site():
 		print "RESULTS ARE OUT, GOOD LUCK!! Time is "+time.ctime()
 
 		# send message
-		send_messages("Hey, results might be out. Good luck!", "UoK Results")
+		send_messages("Hey, results might be out. Good luck!", success_subject)
 		global check_result
 		check_result = False
 
@@ -97,12 +89,9 @@ def send_email(message, subject):
 	EMAIL_TO = [message_email]
 	EMAIL_FROM = message_email
 	EMAIL_SUBJECT = subject
-
 	DATE_FORMAT = "%d/%m/%Y"
 	EMAIL_SPACE = ", "
-
 	DATA=message
-
 
 	msg = MIMEText(DATA)
 	msg['Subject'] = EMAIL_SUBJECT
@@ -117,5 +106,4 @@ def send_email(message, subject):
 
 while (check_result is True):
 	check_site()
-	# time.sleep(3)
-	time.sleep(300)
+	time.sleep(config.c_time_sleep)
