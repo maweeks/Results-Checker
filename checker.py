@@ -48,7 +48,7 @@ def check_site():
 		if (check_count >= system_run_count):
 
 			# send message
-			send_messages("System is still running.", "UoK Checking")
+			send_messages("System is still running.", "", "UoK Checking")
 			check_count = 0
 
 	# else
@@ -56,7 +56,7 @@ def check_site():
 		print "RESULTS ARE OUT, GOOD LUCK!! Time is "+time.ctime()
 
 		# send message
-		send_messages("Hey, results might be out. Good luck!", success_subject)
+		send_messages("Hey, results might be out. Good luck!", r.text, success_subject)
 
 		print r.text
 
@@ -64,7 +64,7 @@ def check_site():
 		check_result = False
 
 
-def send_messages(message, subject):
+def send_messages(message, page, subject):
 	print message
 	print subject
 
@@ -72,7 +72,7 @@ def send_messages(message, subject):
 	send_text(message)
 
 	# send email
-	send_email(message, subject)
+	send_email(message+" "+page, subject)
 
 
 def send_text(message):
