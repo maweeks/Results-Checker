@@ -3,6 +3,7 @@ import requests
 import smtplib
 import subprocess
 import time
+import webbrowser
 import urllib
 
 from email.mime.text import MIMEText
@@ -53,12 +54,15 @@ def check_site():
 
 	# else
 	else:
+
 		print "RESULTS ARE OUT, GOOD LUCK!! Time is "+time.ctime()
 
 		# send message
 		send_messages("Hey, results might be out. Good luck!", r.text, success_subject)
 
 		print r.text
+
+		webbrowser.open("https://www.youtube.com/watch?v=ng8AHEpNDyU")
 
 		global check_result
 		check_result = False
